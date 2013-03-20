@@ -1,6 +1,6 @@
 #include "log_interface.h"
 
-void write_logs(const char *msg, ...)
+void write_logs(UINT u_type, const char *msg, ...)
 {
 	char message[2048] = {0};
 	char szMsg[1024] = {0};

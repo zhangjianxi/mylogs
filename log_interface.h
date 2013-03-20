@@ -8,6 +8,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdlib.h>
-void write_logs(const char *msg, ...);
+
+#define UINT unsigned int
+
+void write_logs(UINT u_type, const char *msg, ...);
 
 #endif

@@ -3,6 +3,6 @@
 
 int main()
 {
-	write_logs("log %s, %s, %s", "zhangjianxi", "3", "client.c");
+	write_logs(0, "log %s, %s, %s", "zhangjianxi", "3", "client.c");
 	return 1;
 }
