@@ -6,6 +6,7 @@ void write_logs(const char *msg, ...)
 	char szMsg[1024] = {0};
 	char *pDirPath = NULL;
 	char szLogPath[1024] = {0};
+	
 	/*
 	 *user va_list to create the **argv
 	 *va_start to read the **argv	 
@@ -43,6 +44,7 @@ void write_logs(const char *msg, ...)
 	 */
 	pDirPath = "/logs";
 	sprintf(szLogPath, "%s/%d-%d-%d", pDirPath, nYear, nMonth, nDay);
+	
 	/*
 	 *access if the path is exist
 	 */
@@ -66,7 +68,6 @@ void write_logs(const char *msg, ...)
 	sprintf(message, "%d-%d-%d %d:%d:%d", nYear, nMonth, nDay, nHour, nMin, nSec);
 	strcat(message, " ");
 	strcat(message, szMsg);
-	printf("%s \n", message);
 	
 	fprintf(pLoger, "%s \n", message);
 	fclose(pLoger);
