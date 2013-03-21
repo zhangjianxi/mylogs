@@ -20,8 +20,7 @@ int sock_fd;
 struct sockaddr_in addr;
 
 int create_sock();
-int send_msg(UINT u_type, const char *msg, ...);
+void create_msg(UINT u_type, const char *msg, ...);
 int end_sock();
-void write_logs(UINT u_type, const char *msg, ...);
 
 #endif

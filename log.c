@@ -11,7 +11,6 @@ int create_sock()
 
 	if (0 > sock_fd)
 	{
-		write_logs(0, "create_sock failed");
 		return -1;
 	}
 
@@ -19,18 +18,18 @@ int create_sock()
 
 	if (-1 == ret)
 	{
-		write_logs(0, "connect to the server failed");
 		return -1;
 	}
 
 	return 0;
 }
 
-
-int send_msg(UINT u_type, const char *msg, ...)
+int send_msg(char *msg)
 {
-	char msg_send[1024];
-	var_list 
+
+	ret = send(sock_fd, msg, strlen(msg), 0);
+
+	return 0;
 }
 
 int end_sock()
@@ -38,10 +37,22 @@ int end_sock()
 	close(sock_fd);
 }
 
-void write_logs(UINT u_type, const char *msg, ...)
+void write_logs(char *message, char *szLogPath)
 {
-	char message[2048] = {0};
+	FILE *pLoger = fopen(szLogPath, "a");
+	if (NULL == pLoger)
+	{
+		return;
+	}
+	
+	fprintf(pLoger, "%s \n", message);
+	fclose(pLoger);
+}
+
+void create_msg(UINT u_type, const char *msg, ...)
+{
 	char szMsg[1024] = {0};
+	char message[2048] = {0};
 	char *pDirPath = NULL;
 	char szLogPath[1024] = {0};
 	
@@ -75,17 +86,17 @@ void write_logs(UINT u_type, const char *msg, ...)
 	int nHour = pDate->tm_hour;
 	int nMin = pDate->tm_min;
 	int nSec = pDate->tm_sec;
-
+	
 	/*
-	 *create the logpath by the time year-month-day
-	 *if the file is exist then add the message to this file
+	 *create the logs by **argv message and the time create this log
 	 */
+	sprintf(message, "%d-%d-%d %d:%d:%d", nYear, nMonth, nDay, nHour, nMin, nSec);
+	strcat(message, " ");
+	strcat(message, szMsg);
+	
 	pDirPath = "/logs";
 	sprintf(szLogPath, "%s/%d-%d-%d", pDirPath, nYear, nMonth, nDay);
 	
-	/*
-	 *access if the path is exist
-	 */
 	if (0 != access(pDirPath, 0))
 	{
 		if (0 != mkdir(pDirPath, 0775))
@@ -94,19 +105,18 @@ void write_logs(UINT u_type, const char *msg, ...)
 		}
 	}
 
-	FILE *pLoger = fopen(szLogPath, "a");
-	if (NULL == pLoger)
+	switch (u_type)
 	{
-		return;
+		case 0:
+			{
+				write_logs(message, szLogPath);
+				break;
+			}
+		case 1:
+			{
+				send_msg(message);
+				break;
+			}
 	}
-
-	/*
-	 *create the logs by **argv message and the time create this log
-	 */
-	sprintf(message, "%d-%d-%d %d:%d:%d", nYear, nMonth, nDay, nHour, nMin, nSec);
-	strcat(message, " ");
-	strcat(message, szMsg);
-	
-	fprintf(pLoger, "%s \n", message);
-	fclose(pLoger);
 }
+
