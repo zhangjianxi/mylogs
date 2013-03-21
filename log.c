@@ -1,5 +1,43 @@
 #include "log_interface.h"
 
+int create_sock()
+{
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(4000);
+	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	bzero(&(addr.sin_zero), 8);
+
+	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (0 > sock_fd)
+	{
+		write_logs(0, "create_sock failed");
+		return -1;
+	}
+
+	ret = connect(sock_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr));
+
+	if (-1 == ret)
+	{
+		write_logs(0, "connect to the server failed");
+		return -1;
+	}
+
+	return 0;
+}
+
+
+int send_msg(UINT u_type, const char *msg, ...)
+{
+	char msg_send[1024];
+	var_list 
+}
+
+int end_sock()
+{
+	close(sock_fd);
+}
+
 void write_logs(UINT u_type, const char *msg, ...)
 {
 	char message[2048] = {0};

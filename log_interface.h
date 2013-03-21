@@ -8,9 +8,20 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+
 
 #define UINT unsigned int
 
+int ret;
+int sock_fd;
+struct sockaddr_in addr;
+
+int create_sock();
+int send_msg(UINT u_type, const char *msg, ...);
+int end_sock();
 void write_logs(UINT u_type, const char *msg, ...);
 
 #endif
