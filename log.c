@@ -1,7 +1,14 @@
 #include "log_interface.h"
 
+/*
+ *create the sock and create the connect with the server  
+ */
 int create_sock()
 {
+	/*
+	 *input the server message 
+	 *next read the message from the config file
+	 */
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(4000);
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -24,6 +31,9 @@ int create_sock()
 	return 0;
 }
 
+/*
+ *send the logs to the server
+ */
 int send_msg(char *msg)
 {
 
@@ -32,11 +42,17 @@ int send_msg(char *msg)
 	return 0;
 }
 
+/*
+ *close the sock
+ */
 int end_sock()
 {
 	close(sock_fd);
 }
 
+/*
+ *write the logs to the file
+ */
 void write_logs(char *message, char *szLogPath)
 {
 	FILE *pLoger = fopen(szLogPath, "a");
@@ -49,6 +65,11 @@ void write_logs(char *message, char *szLogPath)
 	fclose(pLoger);
 }
 
+
+/*
+ *create the log
+ *choice send_msg or write_msg
+ */
 void create_msg(UINT u_type, const char *msg, ...)
 {
 	char szMsg[1024] = {0};
@@ -115,6 +136,10 @@ void create_msg(UINT u_type, const char *msg, ...)
 		case 1:
 			{
 				send_msg(message);
+				break;
+			}
+		default:
+			{
 				break;
 			}
 	}
