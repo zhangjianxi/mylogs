@@ -20,8 +20,6 @@ int main(int argc, char** argv)
 	struct sockaddr_in my_addr;
 	struct sockaddr_in their_addr;
 
-	char *msg = "Hello welcom to my computer\n";
-
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (-1 == sock_fd)
 	{
@@ -46,21 +44,24 @@ int main(int argc, char** argv)
 		fprintf(stdout, "create accept failed \n");
 		return -1;
 	}
-
-	ret = send(new_fd, msg, strlen(msg), 0);
-
-	if (-1 == ret)
-	{
-		fprintf(stdout, "send msg failed \n");
-	}
 	
-	ret = recv(new_fd, recv_msg, 100, 0);
-
-	if (-1 == ret)
+	while (1)
 	{
-		fprintf(stdout, "recv msg failed \n");
-	}
-	fprintf(stdout, "recv : %s \n", recv_msg);
+		bzero(recv_msg, strlen(recv_msg));
+		ret = recv(new_fd, recv_msg, 100, 0);
 
+		if (-1 == ret)
+		{
+			fprintf(stdout, "recv msg failed \n");
+		}
+		if (0 == ret)
+		{
+			fprintf(stdout, "network unconnected \n");
+			break;
+		}
+		recv_msg[strlen(recv_msg)] = 0;
+
+		fprintf(stdout, "recv : %s \n", recv_msg);
+	}
 	close(sock_fd);
 }

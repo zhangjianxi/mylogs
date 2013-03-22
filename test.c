@@ -3,14 +3,14 @@
 
 int main()
 {
+	int i = 0;
+	int max = 1000;
 	create_sock();
-	//while (1)
-	//{
-	//	send_msg(0, "%s \n", "zhangjianxi");
-		//sleep(2);
-	//}
-	//end_sock();	
-	create_msg(1, "log %s, %s, %s", "zhangjianxi", "44", "client.c");
+	for (i; i < max; i++)
+	{
+		create_msg(1, "log %s, %d, %s", "zhangjianxi", i, "client.c");
+		sleep(1);
+	}
 	end_sock();
 	return 1;
 }
